@@ -6,6 +6,6 @@
 
 ## Phase 2: Data & Uncertainty (In Progress)
 - [x] Repository initialized with branching strategy.
-- [ ] Data ingestion script finalized.
-- [ ] Time-series interpolation logic.
+- [x] Data ingestion script finalized.
+- [x] Time-series interpolation logic.
 - [ ] Gaussian/Sigmoid membership function design.
