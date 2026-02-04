@@ -1,0 +1,15 @@
+# Data and API
+data/
+.kaggle/
+kaggle.json
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+.env
+
+# Models
+models/*.h5
+models/*.pkl
