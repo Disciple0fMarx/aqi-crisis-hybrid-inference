@@ -16,54 +16,56 @@ import pandas as pd
 
 class FuzzyInference:
     def __init__(self):
-        pass
+        # Thresholds (Mean, Sigma) based on NAQI guidelines
+        # Format: { 'Pollutant': { 'Good': (mean, sigma), 'Moderate': (mean, sigma), 'Hazardous_Center': (k, L) } }
+        self.thresholds = {
+            'PM2.5': {'Good': (15, 12), 'Moderate': (75, 30), 'Hazard': (0.05, 150)},
+            'PM10':  {'Good': (50, 30), 'Moderate': (175, 75), 'Hazard': (0.02, 350)},
+            'NO2':   {'Good': (20, 15), 'Moderate': (100, 40), 'Hazard': (0.03, 180)},
+            'CO':    {'Good': (0.5, 0.3), 'Moderate': (5, 3), 'Hazard': (0.5, 12)},
+            'SO2':   {'Good': (20, 15), 'Moderate': (100, 50), 'Hazard': (0.02, 200)},
+            'O3':    {'Good': (25, 15), 'Moderate': (100, 40), 'Hazard': (0.03, 180)}
+        }
 
     def _gaussian(self, x, mean, sigma):
-        """Standard Gaussian membership function."""
         return np.exp(-((x - mean)**2) / (2 * sigma**2))
 
     def _sigmoid(self, x, k, L):
-        """Sigmoid membership function for high-end saturation (Hazardous)."""
         return 1 / (1 + np.exp(-k * (x - L)))
 
-    def fuzzify_pm25(self, value):
-        """
-        Maps a PM2.5 value to linguistic fuzzy memberships.
-        Thresholds based on Indian NAQI standards (modified for smooth transitions).
-        """
-        memberships = {
-            # Good: Centered at 15, tapers off by 35
-            "Good": self._gaussian(value, 15, 12),
-            
-            # Moderate: Centered at 75, covers the middle range
-            "Moderate": self._gaussian(value, 75, 30),
-            
-            # Hazardous: Starts rising at 120, fully saturated by 200+
-            "Hazardous": self._sigmoid(value, 0.05, 150)
+    def fuzzify(self, value, pollutant):
+        if pollutant not in self.thresholds:
+            return {}
+        
+        t = self.thresholds[pollutant]
+        return {
+            "Good": self._gaussian(value, *t['Good']),
+            "Moderate": self._gaussian(value, *t['Moderate']),
+            "Hazardous": self._sigmoid(value, *t['Hazard'])
         }
-        return memberships
 
 
 def apply_fuzzification(input_path, output_path):
     df = pd.read_csv(input_path)
     fi = FuzzyInference()
     
-    print(f"Applying Fuzzy Inference to {len(df)} records...")
+    pollutants = ['PM2.5', 'PM10', 'NO2', 'CO', 'SO2', 'O3']
+    print(f"Fuzzifying {len(pollutants)} pollutants...")
     
-    # Apply the fuzzification logic to each row
-    fuzzy_results = df['PM2.5'].apply(fi.fuzzify_pm25)
+    final_df = df.copy()
     
-    # Expand the dictionary into separate columns
-    fuzzy_df = pd.json_normalize(fuzzy_results)
-    
-    # Prefix columns to stay organized
-    fuzzy_df.columns = [f"Fuzzy_PM25_{col}" for col in fuzzy_df.columns]
-    
-    # Combine with original data
-    final_df = pd.concat([df, fuzzy_df], axis=1)
+    for p in pollutants:
+        if p in df.columns:
+            # Generate memberships for this specific pollutant
+            fuzzy_data = df[p].apply(lambda x: fi.fuzzify(x, p))
+            fuzzy_cols = pd.json_normalize(fuzzy_data)
+            
+            # Rename columns: e.g., 'NO2_Good', 'NO2_Moderate'
+            fuzzy_cols.columns = [f"{p}_{col}" for col in fuzzy_cols.columns]
+            final_df = pd.concat([final_df, fuzzy_cols], axis=1)
     
     final_df.to_csv(output_path, index=False)
-    print(f"✓ Fuzzified data saved to: {output_path}")
+    print(f"✓ Full fuzzified data saved to: {output_path}")
 
 
 if __name__ == "__main__":
