@@ -13,3 +13,6 @@ venv/
 # Models
 models/*.h5
 models/*.pkl
+
+# Code - OSS
+.vscode/
