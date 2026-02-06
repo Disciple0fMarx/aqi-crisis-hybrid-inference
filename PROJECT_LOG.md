@@ -10,7 +10,12 @@
 - [x] Time-series interpolation logic.
 - [x] Gaussian/Sigmoid membership function design.
 
-## Phase 3: Knowledge Discovery (In Progress)
-- [ ] Implement Fuzzy-Support calculation in `apriori_engine.py`.
-- [ ] Mine associations between $NO_2, SO_2, CO$, and $PM_{2.5}$.
-- [ ] Export 'Rule Features' for the LSTM.
+## Phase 3: Knowledge Discovery (Done)
+- [x] Implemented Fuzzy-Support and T-norm (min) logic.
+- [x] Mined inter-pollutant rules for Delhi dataset.
+- [x] Exported 'Knowledge Base' to `metadata/rules.json`.
+
+## Phase 4: The Hybrid Model (Next)
+- [ ] Implement Rule-Activation logic for time-series.
+- [ ] Build the LSTM architecture in `lstm_hybrid.py`.
+- [ ] Train the model using Knowledge-Augmented features.
