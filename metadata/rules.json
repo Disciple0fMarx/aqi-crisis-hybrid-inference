@@ -1,0 +1,22 @@
+[
+    {
+        "rule": "IF PM10_Hazardous THEN PM2.5_Hazardous",
+        "support": 0.17823136830379185,
+        "confidence": 0.8527289961675254
+    },
+    {
+        "rule": "IF NO2_Moderate THEN PM2.5_Hazardous",
+        "support": 0.23131725370998577,
+        "confidence": 0.49431034463670276
+    },
+    {
+        "rule": "IF CO_Moderate THEN PM2.5_Hazardous",
+        "support": 0.19827516122476593,
+        "confidence": 0.42384245635135304
+    },
+    {
+        "rule": "IF SO2_Moderate THEN PM2.5_Hazardous",
+        "support": 0.12220405561882706,
+        "confidence": 0.4959300282498965
+    }
+]
