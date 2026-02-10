@@ -16,6 +16,11 @@
 - [x] Exported 'Knowledge Base' to `metadata/rules.json`.
 
 ## Phase 4: The Hybrid Model (Next)
-- [ ] Implement Rule-Activation logic for time-series.
-- [ ] Build the LSTM architecture in `lstm_hybrid.py`.
-- [ ] Train the model using Knowledge-Augmented features.
+- [x] Implement Rule-Activation logic for Knowledge Injection.
+- [x] Optimized LSTM architecture with Knowledge-Augmented features.
+- [x] Conducted Cross-City Generalization tests (Kolkata, Mumbai, Vizag, Aizawl).
+
+## Phase 5: Evaluation & Performance Analytics (Next)
+- [x] Generate Comparative Error Matrices (MAE vs. RMSE vs. Bias) across topographies.
+- [x] Analyze "Delhi Lens" bias in coastal vs. landlocked cities.
+- [x] Conduct Residual Analysis to identify systematic under-prediction in high-humidity zones.
