@@ -1,0 +1,19 @@
+{
+  "id": "dhyaelbahri/aqi-hybrid-train-job",
+  "id_no": 108816349,
+  "title": "aqi-hybrid-train-job",
+  "code_file": "src/models/kaggle_remote_train.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "keywords": [],
+  "dataset_sources": [],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "model_sources": [],
+  "docker_image": "",
+  "machine_shape": "None"
+}
