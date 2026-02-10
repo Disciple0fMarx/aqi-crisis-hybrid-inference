@@ -64,6 +64,14 @@ def run_transfer_test(city_name, lookback=14):
     feature_cols = ['PM2.5', 'PM2.5_Good', 'PM2.5_Moderate', 'PM2.5_Hazardous', 'Rule_0', 'Rule_1', 'Rule_2', 'Rule_3']
     for col in feature_cols:
         if col not in city_df.columns: city_df[col] = 0.0
+    # THE CRITICAL FIX: Interpolate missing sensor values
+    # 'linear' interpolation fills gaps, 'ffill'/'bfill' handles the edges
+    city_df[feature_cols] = city_df[feature_cols].interpolate(method='linear').ffill().bfill()
+
+    # Final NaN check - if still NaN, drop them
+    if city_df[feature_cols].isnull().values.any():
+        print(f"⚠️ Warning: Dropping remaining {city_df[feature_cols].isnull().any(axis=1).sum()} rows with NaNs")
+        city_df = city_df.dropna(subset=feature_cols)
 
     data_scaled = scaler.transform(city_df[feature_cols])
 
