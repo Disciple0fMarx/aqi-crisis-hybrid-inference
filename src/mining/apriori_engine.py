@@ -94,8 +94,8 @@ def save_rules(rules, filename="rules.json"):
     print(f"✓ {len(rules)} Knowledge Rules exported to: {output_path}")
 
 
-def run_mining_session():
-    df = pd.read_csv("data/processed/fuzzified_delhi_data.csv")
+def run_mining_session(city_name='Delhi', filename="rules.json"):
+    df = pd.read_csv(f"data/processed/fuzzified_{'_'.join(city_name.lower().split(' '))}_data.csv")
     
     # Filter for all fuzzy membership columns
     fuzzy_cols = [c for c in df.columns if any(s in c for s in ['_Good', '_Moderate', '_Hazardous'])]
@@ -116,7 +116,7 @@ def run_mining_session():
         print(f"{r['rule']} | Conf: {r['confidence']:.2f} | Sup: {r['support']:.2f}")
         
     if rules:
-        save_rules(rules)
+        save_rules(rules, filename)
     else:
         print("[!] No rules found. Try lowering min_support or min_confidence.")
 
